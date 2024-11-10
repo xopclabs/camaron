@@ -1,0 +1,324 @@
+meta:
+  engine: 4.1.0
+
+units:
+  # Visualization variable
+  $default_width: cx
+  $default_height: cy
+
+  # Proxy Spacing Variables
+  kx: cx
+  ky: cy
+
+  # Global layout variables
+
+  # Main part
+  far_pinky_stagger: -0.25 ky
+  pinky_stagger: -0.25 ky
+  ring_stagger: 0.0 ky
+  middle_stagger: 0.25 ky
+  index_stagger: 0 ky
+  far_index_stagger: -0.0 ky
+
+  far_pinky_splay: 0
+  pinky_splay: 0
+  ring_splay: 0
+  middle_splay: 0
+  index_splay: 0
+  far_index_splay: 0
+
+  far_pinky_spread: 1 kx
+  pinky_spread: 1 kx
+  ring_spread: 1 kx
+  middle_spread: 1 kx
+  index_spread: 1 kx
+  far_index_spread: 1 kx
+
+  # Thumb cluster
+  thumb_x_shift: -0.8 kx
+  thumb_y_shift: -1.5 ky
+
+  left_thumb_splay: -10
+  mid_thumb_splay: -10
+  right_thumb_splay: -10
+
+  left_thumb_shift_x: -0.25 kx
+  left_thumb_shift_y: 0.25ky
+
+  mid_thumb_shift_x: -0.25 kx
+  mid_thumb_shift_y: 0.25 ky 
+
+  right_thumb_shift_x: -0.25 kx
+  right_thumb_shift_y: 0.25 ky
+
+    
+  # Outline variables
+  center_x: 100
+  center_y: -100
+  keys_rotation: -5
+  # Padding
+  px: 1.2
+  py: 1.2
+  pkx: kx + px
+  pky: ky + py
+  # Rect parameters
+  rect_left_padding: -0.6 kx
+  rect_right_padding: -1.5 kx
+  rect_bottom_padding: 0. ky
+  rect_top_padding: -0.5 ky
+
+  # Local (relative) layout variables
+  l_far_pinky_splay: far_pinky_splay
+  l_pinky_splay: pinky_splay - far_pinky_splay
+  l_ring_splay: ring_splay - pinky_splay
+  l_middle_splay: middle_splay - ring_splay
+  l_index_splay: index_splay - middle_splay
+  l_far_index_splay: far_index_splay - index_splay
+
+  l_far_pinky_stagger: far_pinky_stagger
+  l_pinky_stagger: pinky_stagger - far_pinky_stagger
+  l_ring_stagger: ring_stagger - pinky_stagger
+  l_middle_stagger: middle_stagger - ring_stagger
+  l_index_stagger: index_stagger - middle_stagger
+  l_far_index_stagger: far_index_stagger - index_stagger
+
+  l_left_thumb_splay: left_thumb_splay
+  l_mid_thumb_splay: mid_thumb_splay - left_thumb_splay
+  l_right_thumb_splay: right_thumb_splay - mid_thumb_splay
+
+  # PCB variables
+  promicro_x: 33
+  promicro_y: 18
+
+  promicro_x_pad: 2
+  promicro_y_pad: 1
+
+  diode_shift_y: -3
+
+  reset_shift_x: 1
+  reset_shift_y: 3.5
+
+points:
+  zones:
+
+    main:
+      rotate: keys_rotation
+      anchor:
+        shift: [center_x, center_y]
+      key:
+        padding: 1 ky
+        spread: 1 kx
+        tags:
+          - key
+      rows:
+        bottom:
+          row_net: P04
+        home:
+          row_net: P00
+        top:
+          row_net: P01
+      columns:
+        far_pinky:
+          key:
+            stagger: l_far_pinky_stagger
+            splay: l_far_pinky_splay
+            spread: far_pinky_spread
+            col_net: P21
+        pinky:
+          key:
+            stagger: l_pinky_stagger
+            splay: l_pinky_splay
+            spread: pinky_spread
+            col_net: P20
+        ring:
+          key:
+            stagger: l_ring_stagger
+            splay: l_ring_splay
+            spread: ring_spread
+            col_net: P19
+        middle:
+          key:
+            stagger: l_middle_stagger
+            splay: l_middle_splay
+            spread: middle_spread
+            col_net: P18
+        index:
+          key:
+            stagger: l_index_stagger
+            splay: l_index_splay
+            spread: index_spread
+            col_net: P15 
+          rows.home.tags:
+            - key-rotated
+        far_index:
+          key:
+            stagger: l_far_index_stagger
+            splay: l_far_index_splay
+            spread: far_index_spread
+            col_net: P14
+          rows.home.tags:
+            - key-rotated
+
+    thumb:
+      key:
+        padding: 1 ky
+        spread: 1 kx
+        tags:
+          - key
+      anchor:
+        ref: main_index_bottom
+        shift: [thumb_x_shift, thumb_y_shift + far_index_stagger ]
+      rows:
+        cluster:
+          row_net: P09
+      columns:
+        left:
+          key:
+            splay: l_left_thumb_splay
+            shift: [left_thumb_shift_x, left_thumb_shift_y]
+            skip: false
+            col_net: P18
+        mid:
+          key:
+            splay: l_mid_thumb_splay
+            shift: [mid_thumb_shift_x, mid_thumb_shift_y]
+            col_net: P15
+        right:
+          key:
+            splay: l_right_thumb_splay
+            shift: [right_thumb_shift_x, right_thumb_shift_y]
+            col_net: P14
+
+outlines:
+
+  _shape_rect:
+    - what: polygon
+      operation: stack
+      fillet: 0
+      points:
+        # right top
+        - ref: main_middle_bottom
+          orient: -keys_rotation
+          shift: [rect_right_padding + (3kx + 0.5pkx), 
+                  rect_top_padding + (2ky + 0.5 pky) + (index_stagger - middle_stagger)]               
+        # right bottom
+        - ref: main_middle_bottom
+          orient: -keys_rotation
+          shift: [rect_right_padding + (3kx + 0.5pkx), 
+                  rect_bottom_padding + (thumb_y_shift - 0.5 pky)  + (index_stagger - middle_stagger)]
+        # left bottom
+        - ref: main_middle_bottom
+          orient: -keys_rotation
+          shift: [rect_left_padding + (-2kx - 0.5pkx), 
+                  rect_bottom_padding + (thumb_y_shift - 0.5 pky)  + (index_stagger - middle_stagger)]
+        # left top
+        - ref: main_middle_bottom
+          orient: -keys_rotation
+          shift: [rect_left_padding + (-2kx - 0.5pkx), 
+                  rect_top_padding + (2ky + 0.5 pky)  + (index_stagger - middle_stagger)]
+
+  _shape_keys:
+    - what: rectangle
+      where: true
+      fillet: 0
+      size: [pkx, pky]
+
+  _board: [
+    +_shape_rect,
+    +_shape_keys,
+  ]
+
+  board:
+    - what: outline
+      name: _board
+      fillet: 1
+
+  _debug_keys:
+    - what: rectangle
+      where: true
+      size: [kx-0.5, ky-0.5]
+
+  debug: [
+    +board,
+    -_debug_keys
+  ]
+
+pcbs:
+  steno:
+    # template: kicad8
+    outlines:
+      main:
+        outline: board
+    footprints:
+
+      choc-hotswap:
+        what: infused-kim/choc
+        where: [key]
+        params:
+          reverse: true
+          from: "{{col_net}}"
+          to: "{{colrow}}"
+
+      choc-hotswap-rotated:
+        what: infused-kim/choc
+        where: [key-rotated]
+        params:
+          reverse: true
+          from: "{{col_net}}"
+          to: "{{colrow}}"
+        adjust:
+          rotate: 180
+
+      diode:
+        what: infused-kim/diode
+        where: [key]
+        params:
+          from: "{{colrow}}"
+          to: "{{row_net}}"
+        adjust:
+          shift: [0, diode_shift_y]
+
+      diode-adjusted:
+        what: infused-kim/diode
+        where: [key-rotated]
+        params:
+          from: "{{colrow}}"
+          to: "{{row_net}}"
+        adjust:
+          shift: [0, -diode_shift_y]
+    
+      promicro:
+        what: infused-kim/nice_nano_pretty
+        params:
+            traces: true
+            show_via_labels: false
+            show_instructions: false
+        where:
+          ref: main_middle_bottom
+          shift: [promicro_x/2 + promicro_x_pad + rect_left_padding + (-2kx - 0.5pkx), 
+                  promicro_y/2 + promicro_y_pad + rect_bottom_padding + (thumb_y_shift - 0.5 pky)  + (index_stagger - middle_stagger)]
+          orient: -keys_rotation
+          rotate: 90
+
+      reset:
+        what: infused-kim/switch_reset
+        params:
+          from: GND
+          to: RST
+        where:
+          ref: main_middle_bottom
+          shift: [reset_shift_x + promicro_x_pad + rect_left_padding + (-2kx - 0.5pkx), 
+                  reset_shift_y + promicro_y + promicro_y_pad + rect_bottom_padding + (thumb_y_shift - 0.5 pky)  + (index_stagger - middle_stagger)]
+          orient: -keys_rotation
+
+      trackpoint:
+        what: infused-kim/trackpoint_mount
+        params:
+          side: 'F'
+          reverse: false
+          drill: 3.5
+          show_outline_t460s: true
+        where:
+          ref.aggregate.parts: [main_index_top, main_far_index_top]
+          shift: [0, -0.5ky]
+          rotate: 90
