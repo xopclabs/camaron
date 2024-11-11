@@ -71,7 +71,7 @@ units:
   # MCU
   promicro_x: 33
   promicro_y: 18
-  promicro_x_pad: 1.5
+  promicro_x_pad: px
   promicro_y_pad: 0.25
   # Diode in relation to switch
   diode_shift_y: -3
@@ -320,6 +320,7 @@ pcbs:
         what: infused-kim/switch_power
         params:
           reverse: true
+          side: "F"
           # from: GND
           # to: RST
         where:
