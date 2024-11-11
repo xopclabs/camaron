@@ -248,49 +248,77 @@ outlines:
 
 pcbs:
   camaron:
-    # template: kicad8
+    template: kicad8
     outlines:
       main:
         outline: board
     footprints:
 
       choc-hotswap:
-        what: infused-kim/choc
+        what: ceoloide/switch_choc_v1_v2
         where: [key]
         params:
-          reverse: true
+          side: F
+          reversible: true
+          choc_v2_support: false
+          include_keycap: true
+          keycap_width: 18
+          keycap_height: 17
+          include_corner_marks: true
+          keycap_3dmodel_filename: '${EG_INFUSED_KIM_3D_MODELS}/Choc_V1_Keycap_MBK_Black_1u.step'
+          switch_3dmodel_filename: '${EG_INFUSED_KIM_3D_MODELS}/Choc_V1_Switch.step'
+          hotswap_3dmodel_filename: '${EG_INFUSED_KIM_3D_MODELS}/Choc_V1_Hotswap.step'
           from: "{{col_net}}"
           to: "{{colrow}}"
 
       choc-hotswap-rotated:
-        what: infused-kim/choc
+        what: ceoloide/switch_choc_v1_v2
         where: [key-rotated]
         params:
-          reverse: true
+          side: F
+          reversible: true
+          choc_v2_support: false
+          include_keycap: true
+          keycap_width: 18
+          keycap_height: 17
+          include_corner_marks: true
+          keycap_3dmodel_filename: '${EG_INFUSED_KIM_3D_MODELS}/Choc_V1_Keycap_MBK_Black_1u.step'
+          switch_3dmodel_filename: '${EG_INFUSED_KIM_3D_MODELS}/Choc_V1_Switch.step'
+          hotswap_3dmodel_filename: '${EG_INFUSED_KIM_3D_MODELS}/Choc_V1_Hotswap.step'
           from: "{{col_net}}"
           to: "{{colrow}}"
         adjust:
           rotate: 180
 
       diode:
-        what: infused-kim/diode
+        what: ceoloide/diode_tht_sod123
         where: [key]
         params:
+          side: B
+          reversible: true
+          include_tht: true
+          diode_3dmodel_filename: '${EG_INFUSED_KIM_3D_MODELS}/Diode_1N4148W.step'
+          diode_3dmodel_xyz_rotation: [-90, 0, 0]
           from: "{{colrow}}"
           to: "{{row_net}}"
         adjust:
           shift: [0, diode_shift_y]
 
       diode-adjusted:
-        what: infused-kim/diode
+        what: ceoloide/diode_tht_sod123
         where: [key-rotated]
         params:
+          side: B
+          reversible: true
+          include_tht: true
+          diode_3dmodel_filename: '${EG_INFUSED_KIM_3D_MODELS}/Diode_1N4148W.step'
+          diode_3dmodel_xyz_rotation: [-90, 0, 0]
           from: "{{colrow}}"
           to: "{{row_net}}"
         adjust:
           shift: [0, -diode_shift_y]
     
-      promicro:
+      mcu:
         what: infused-kim/nice_nano_pretty
         params:
             traces: true
@@ -306,6 +334,7 @@ pcbs:
       reset:
         what: infused-kim/switch_reset
         params:
+          side: F
           reverse: true
           from: GND
           to: RST
@@ -317,12 +346,12 @@ pcbs:
           rotate: 180
 
       power-switch:
-        what: infused-kim/switch_power
+        what: ceoloide/power_switch_smd_side
         params:
-          reverse: true
-          side: "F"
-          # from: GND
-          # to: RST
+          reversible: true
+          side: F
+          switch_3dmodel_filename: '${EG_INFUSED_KIM_3D_MODELS}/Switch_Power.step'
+          switch_3dmodel_xyz_rotation: [-90, 0, -90]
         where:
           ref: main_middle_bottom
           shift: [pswitch_shift_x + promicro_x_pad + promicro_x + rect_left_padding + (-2kx - 0.5pkx), 
