@@ -179,7 +179,7 @@ points:
           key:
             splay: l_left_thumb_splay
             shift: [left_thumb_shift_x, left_thumb_shift_y]
-            skip: false
+            skip: true
             col_net: P18
         mid:
           key:
@@ -247,7 +247,7 @@ outlines:
   ]
 
 pcbs:
-  steno:
+  camaron:
     # template: kicad8
     outlines:
       main:
