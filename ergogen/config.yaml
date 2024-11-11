@@ -67,6 +67,21 @@ units:
   rect_bottom_padding: 0. ky
   rect_top_padding: -0.5 ky
 
+  # PCB variables
+  # MCU
+  promicro_x: 33
+  promicro_y: 18
+  promicro_x_pad: 1.5
+  promicro_y_pad: 0.25
+  # Diode in relation to switch
+  diode_shift_y: -3
+  # Reset button
+  reset_shift_x: 2.0
+  reset_shift_y: 3.5
+  # Power switch
+  pswitch_shift_x: 5
+  pswitch_shift_y: 1.75
+
   # Local (relative) layout variables
   l_far_pinky_splay: far_pinky_splay
   l_pinky_splay: pinky_splay - far_pinky_splay
@@ -85,18 +100,6 @@ units:
   l_left_thumb_splay: left_thumb_splay
   l_mid_thumb_splay: mid_thumb_splay - left_thumb_splay
   l_right_thumb_splay: right_thumb_splay - mid_thumb_splay
-
-  # PCB variables
-  promicro_x: 33
-  promicro_y: 18
-
-  promicro_x_pad: 2
-  promicro_y_pad: 1
-
-  diode_shift_y: -3
-
-  reset_shift_x: 1
-  reset_shift_y: 3.5
 
 points:
   zones:
@@ -303,13 +306,28 @@ pcbs:
       reset:
         what: infused-kim/switch_reset
         params:
+          reverse: true
           from: GND
           to: RST
         where:
           ref: main_middle_bottom
-          shift: [reset_shift_x + promicro_x_pad + rect_left_padding + (-2kx - 0.5pkx), 
-                  reset_shift_y + promicro_y + promicro_y_pad + rect_bottom_padding + (thumb_y_shift - 0.5 pky)  + (index_stagger - middle_stagger)]
+          shift: [reset_shift_x + rect_left_padding + (-2kx - 0.5pkx), 
+                  reset_shift_y + promicro_y + rect_bottom_padding + (thumb_y_shift - 0.5 pky)  + (index_stagger - middle_stagger)]
           orient: -keys_rotation
+          rotate: 180
+
+      power-switch:
+        what: infused-kim/switch_power
+        params:
+          reverse: true
+          # from: GND
+          # to: RST
+        where:
+          ref: main_middle_bottom
+          shift: [pswitch_shift_x + promicro_x_pad + promicro_x + rect_left_padding + (-2kx - 0.5pkx), 
+                  pswitch_shift_y + promicro_y_pad + rect_bottom_padding + (thumb_y_shift - 0.5 pky)  + (index_stagger - middle_stagger)]
+          orient: -keys_rotation
+          rotate: -90
 
       trackpoint:
         what: infused-kim/trackpoint_mount
